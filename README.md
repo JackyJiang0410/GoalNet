@@ -3,10 +3,10 @@ This project uses Graph Neural Networks (GNNs) to analyze soccer player interact
 
 ## Table of Contents
 - [Installation](#installation)
-- [Data Collection](#data-collection)
-- [Model Training](#model-training)
-- [Player Evaluation](#player-evaluation)
-- [Results](#results)
+- [Data Collection](#Download-Player-Information)
+- [Model Training](#Train-the-Model)
+- [Player Evaluation](#Evaluate-Player-xT-Contributions)
+- [Files](#Files)
 
 ## Installation
 
@@ -17,12 +17,12 @@ pip install -r requirements.txt
 ```
 
 ## Project Workflow
-1. Download Player Information
+### 1. Download Player Information
 Use the dataset/sofascore.ipynb Jupyter notebook to download player information from SofaScore. Follow these steps:
-Open dataset/sofascore.ipynb in your Jupyter environment.
-Execute the cells to download the player data.
-Save the player data to the desired directory for use in training and evaluation.
-2. Train the Model
+ - Open dataset/sofascore.ipynb in your Jupyter environment.
+ - Execute the cells to download the player data.
+ - Save the player data to the desired directory for use in training and evaluation.
+### 2. Train the Model
 Once the player data is prepared, proceed to train the GNN model by running the train.py script. Before training, you can update the script's arguments to fit your competition, season, and other configurations.
 ```bash
 parser.add_argument('-c', '--comp', default="Premier League", type=str, help='competition name')
@@ -46,7 +46,7 @@ python train.py -c "Premier League" -s "2015/2016" -p /path/to/player_data -o /p
 ```
 This will train the GNN model and save the trained weights to the specified out_path.
 
-3. Evaluate Player xT Contributions
+### 3. Evaluate Player xT Contributions
 After training, use eval_player.py to evaluate the xT contributions for each player. Update the script’s arguments to match your setup.
 
 ```bash
@@ -67,11 +67,11 @@ python eval_player.py -c "Premier League" -s "2015/2016" -p /path/to/player_data
 ```
 This command will evaluate the xT contributions of each player using the trained GNN model and save the results to the specified output_path.
 
-Files
-train.py: Used to train the GNN model.
-eval_player.py: Used to evaluate the xT contributions of players.
-dataset/sofascore.ipynb: Jupyter notebook to download player information from SofaScore.
-requirements.txt: Contains all the necessary packages and dependencies required for the project.
-Output
-The trained model is saved to the specified path (e.g., ckpt.pth).
-The player xT contributions are saved to a CSV file (e.g., output.csv).
+## Files
+ - train.py: Used to train the GNN model.
+ - eval_player.py: Used to evaluate the xT contributions of players.
+ - dataset/sofascore.ipynb: Jupyter notebook to download player information from SofaScore.
+ - requirements.txt: Contains all the necessary packages and dependencies required for the project.
+ - Output
+   - The trained model is saved to the specified path (e.g., ckpt.pth).
+   - The player xT contributions are saved to a CSV file (e.g., output.csv).
