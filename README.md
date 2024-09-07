@@ -3,9 +3,9 @@ This project uses Graph Neural Networks (GNNs) to analyze soccer player interact
 
 ## Table of Contents
 - [Installation](#installation)
-- [Data Collection](#Download-Player-Information)
-- [Model Training](#Train-the-Model)
-- [Player Evaluation](#Evaluate-Player-xT-Contributions)
+- [Data Collection](#1-download-player-information)
+- [Model Training](#2-Train-the-Model)
+- [Player Evaluation](#3-Evaluate-Player-xT-Contributions)
 - [Files](#Files)
 
 ## Installation
