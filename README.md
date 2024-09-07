@@ -1,120 +1,76 @@
 # Unveiling-Hidden-Pivotal-Players-A-GNN-Based-Soccer-Player-Evaluation-System
-\documentclass{article}
-\usepackage{hyperref}
+This project uses Graph Neural Networks (GNNs) to analyze soccer player interactions and assign **Expected Threat (xT)** values to individual players. By leveraging player interaction data, this model highlights the hidden contributions of players who may not directly contribute to goals but play crucial roles in ball progression and team coordination.
 
-\title{Unveiling Hidden Pivotal Players: A GNN-Based Soccer Player Evaluation System}
-\author{}
-\date{}
+## Table of Contents
+- [Installation](#installation)
+- [Data Collection](#data-collection)
+- [Model Training](#model-training)
+- [Player Evaluation](#player-evaluation)
+- [Results](#results)
 
-\begin{document}
+## Installation
 
-\maketitle
+First, install all the required dependencies listed in the `requirements.txt` file. Run the following command in your terminal:
 
-\section*{Overview}
-
-This project uses Graph Neural Networks (GNN) to evaluate soccer players' contributions, beyond traditional metrics like goals and assists, by analyzing their involvement in ball progression and defensive maneuvers. This system leverages player and event data from soccer matches to assign Expected Threat (xT) contributions to players using node embeddings learned through the GNN model.
-
-\section*{Installation}
-
-Before running the code, you need to install all required packages. You can do this by using the provided \texttt{requirements.txt} file:
-
-\begin{verbatim}
+```bash
 pip install -r requirements.txt
-\end{verbatim}
 
-\section*{Steps}
+## Project Workflow
+1. Download Player Information
+Use the dataset/sofascore.ipynb Jupyter notebook to download player information from SofaScore. Follow these steps:
+Open dataset/sofascore.ipynb in your Jupyter environment.
+Execute the cells to download the player data.
+Save the player data to the desired directory for use in training and evaluation.
+2. Train the Model
+Once the player data is prepared, proceed to train the GNN model by running the train.py script. Before training, you can update the script's arguments to fit your competition, season, and other configurations.
+```bash
+parser.add_argument('-c', '--comp', default="Premier League", type=str, help='competition name')
+parser.add_argument('-s', '--season', default="2015/2016", type=str, help='season name')
+parser.add_argument('-p', '--path', default='', type=str, help='path to player data')
+parser.add_argument('-o', '--out_path', default='Unveiling-Hidden-Pivotal-Players-A-GNN-Based-Soccer-Player-Evaluation-System/ckpt.pth', type=str, help='path to save model')
+parser.add_argument('-ed', '--edge_dim', default=11, type=int, help='edge feature dim')
+parser.add_argument('-hd', '--hidden_dim', default=32, type=int, help='hidden dimension')
+parser.add_argument('-od', '--output_dim', default=32, type=int, help='output dimension')
+parser.add_argument('-lr', '--learning_rate', default=1e-4, type=float, help='learning rate')
+parser.add_argument('-bs', '--batch_size', default=32, type=int, help='batch size')
+parser.add_argument('-vs', '--val_size', default=0.2, type=float, help='validation size')
+parser.add_argument('-w', '--wandb', default='CMSAC', type=str, help='wandb project name')
+parser.add_argument('-e', '--epoch', default=10, type=int, help='epoch number for training')
+parser.add_argument('-d', '--device', default=0, type=int, help='device number')
 
-\subsection*{1. Download Player Information}
 
-Use the Jupyter notebook \texttt{dataset/sofascore.ipynb} to download player information. You can save this data to any directory of your choice. 
+Example Training Command
+```bash
+python train.py -c "Premier League" -s "2015/2016" -p /path/to/player_data -o /path/to/save_model.ckpt
 
-\subsection*{2. Train the Model}
+This will train the GNN model and save the trained weights to the specified out_path.
 
-Once you have downloaded the player data, update the arguments in \texttt{train.py} to set up your training environment. The following are the arguments you can modify:
+3. Evaluate Player xT Contributions
+After training, use eval_player.py to evaluate the xT contributions for each player. Update the script’s arguments to match your setup.
 
-\begin{verbatim}
-parser.add_argument('-c', '--comp', default="Premier League", type=str,
-                    help='competition name')
-parser.add_argument('-s', '--season', default="2015/2016", type=str,
-                    help='season name')
-parser.add_argument('-p', '--path', default='', type=str,
-                    help='path to player data')
-parser.add_argument('-o', '--out_path', default='Unveiling-Hidden-Pivotal-Players-A-GNN-Based-Soccer-Player-Evaluation-System/ckpt.pth', type=str,
-                    help='path to save model')
-parser.add_argument('-ed', '--edge_dim', default=11, type=int,
-                    help='edge feature dim')
-parser.add_argument('-hd', '--hidden_dim', default=32, type=int,
-                    help='hidden dimension')
-parser.add_argument('-od', '--output_dim', default=32, type=int,
-                    help='output dimension')
-parser.add_argument('-lr', '--learning_rate', default=1e-4, type=float,
-                    help='learning rate')
-parser.add_argument('-bs', '--batch_size', default=32, type=int,
-                    help='batch size')
-parser.add_argument('-vs', '--val_size', default=0.2, type=float,
-                    help='validation size')
-parser.add_argument('-w', '--wandb', default='CMSAC', type=str,
-                    help='wandb project name')
-parser.add_argument('-e', '--epoch', default=10, type=int,
-                    help='epoch number for training')
-parser.add_argument('-d', '--device', default=0, type=int,
-                    help='device number')
-\end{verbatim}
+```bash
+parser.add_argument('-c', '--comp', default="Premier League", type=str, help='competition name')
+parser.add_argument('-s', '--season', default="2015/2016", type=str, help='season name')
+parser.add_argument('-p', '--path', default='', type=str, help='path to player data')
+parser.add_argument('-m', '--model_path', default='Unveiling-Hidden-Pivotal-Players-A-GNN-Based-Soccer-Player-Evaluation-System/ckpt.pth', type=str, help='path to load model')
+parser.add_argument('-ed', '--edge_dim', default=11, type=int, help='edge feature dim')
+parser.add_argument('-hd', '--hidden_dim', default=32, type=int, help='hidden dimension')
+parser.add_argument('-od', '--output_dim', default=32, type=int, help='output dimension')
+parser.add_argument('-lr', '--learning_rate', default=1e-4, type=float, help='learning rate')
+parser.add_argument('-bs', '--batch_size', default=32, type=int, help='batch size')
+parser.add_argument('-o', '--output_path', default='Unveiling-Hidden-Pivotal-Players-A-GNN-Based-Soccer-Player-Evaluation-System/output.csv', type=str, help='path to save evaluation results')
 
-Once you have updated the necessary arguments, you can train the model and save it to your desired directory by running the following command:
+Example Evaluation Command
+```bash
+python eval_player.py -c "Premier League" -s "2015/2016" -p /path/to/player_data -m /path/to/save_model.ckpt -o /path/to/output.csv
 
-\begin{verbatim}
-python train.py
-\end{verbatim}
+This command will evaluate the xT contributions of each player using the trained GNN model and save the results to the specified output_path.
 
-The trained model will be saved to the specified \texttt{--out\_path} (default: \texttt{ckpt.pth}).
-
-\subsection*{3. Evaluate Player Contributions}
-
-After training the model, you can extract the xT contributions for each player using the \texttt{eval\_player.py} script. The following are the arguments you can modify:
-
-\begin{verbatim}
-parser.add_argument('-c', '--comp', default="Premier League", type=str,
-                    help='competition name')
-parser.add_argument('-s', '--season', default="2015/2016", type=str,
-                    help='season name')
-parser.add_argument('-p', '--path', default='', type=str,
-                    help='path to player data')
-parser.add_argument('-m', '--model_path', default='Unveiling-Hidden-Pivotal-Players-A-GNN-Based-Soccer-Player-Evaluation-System/ckpt.pth', type=str,
-                    help='path to load model')
-parser.add_argument('-ed', '--edge_dim', default=11, type=int,
-                    help='edge feature dim')
-parser.add_argument('-hd', '--hidden_dim', default=32, type=int,
-                    help='hidden dimension')
-parser.add_argument('-od', '--output_dim', default=32, type=int,
-                    help='output dimension')
-parser.add_argument('-lr', '--learning_rate', default=1e-4, type=float,
-                    help='learning rate')
-parser.add_argument('-bs', '--batch_size', default=32, type=int,
-                    help='batch size')
-parser.add_argument('-o', '--output_path', default='Unveiling-Hidden-Pivotal-Players-A-GNN-Based-Soccer-Player-Evaluation-System/output.csv', type=str,
-                    help='path to save xT contributions')
-\end{verbatim}
-
-You can evaluate player contributions and save the results to your desired directory by running the following command:
-
-\begin{verbatim}
-python eval_player.py
-\end{verbatim}
-
-The player xT contributions will be saved to the specified \texttt{--output\_path} (default: \texttt{output.csv}).
-
-\section*{Summary of Commands}
-
-\begin{enumerate}
-    \item Install dependencies: \texttt{pip install -r requirements.txt}
-    \item Download player data: Run \texttt{sofascore.ipynb}
-    \item Train the model: \texttt{python train.py}
-    \item Evaluate player xT: \texttt{python eval\_player.py}
-\end{enumerate}
-
-\section*{License}
-
-This project is licensed under the MIT License.
-
-\end{document}
+Files
+train.py: Used to train the GNN model.
+eval_player.py: Used to evaluate the xT contributions of players.
+dataset/sofascore.ipynb: Jupyter notebook to download player information from SofaScore.
+requirements.txt: Contains all the necessary packages and dependencies required for the project.
+Output
+The trained model is saved to the specified path (e.g., ckpt.pth).
+The player xT contributions are saved to a CSV file (e.g., output.csv).
