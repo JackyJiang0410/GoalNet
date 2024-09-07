@@ -14,6 +14,7 @@ First, install all the required dependencies listed in the `requirements.txt` fi
 
 ```bash
 pip install -r requirements.txt
+```bash
 
 ## Project Workflow
 1. Download Player Information
@@ -37,12 +38,12 @@ parser.add_argument('-vs', '--val_size', default=0.2, type=float, help='validati
 parser.add_argument('-w', '--wandb', default='CMSAC', type=str, help='wandb project name')
 parser.add_argument('-e', '--epoch', default=10, type=int, help='epoch number for training')
 parser.add_argument('-d', '--device', default=0, type=int, help='device number')
-
+```bash
 
 Example Training Command
 ```bash
 python train.py -c "Premier League" -s "2015/2016" -p /path/to/player_data -o /path/to/save_model.ckpt
-
+```bash
 This will train the GNN model and save the trained weights to the specified out_path.
 
 3. Evaluate Player xT Contributions
@@ -59,11 +60,11 @@ parser.add_argument('-od', '--output_dim', default=32, type=int, help='output di
 parser.add_argument('-lr', '--learning_rate', default=1e-4, type=float, help='learning rate')
 parser.add_argument('-bs', '--batch_size', default=32, type=int, help='batch size')
 parser.add_argument('-o', '--output_path', default='Unveiling-Hidden-Pivotal-Players-A-GNN-Based-Soccer-Player-Evaluation-System/output.csv', type=str, help='path to save evaluation results')
-
+```bash
 Example Evaluation Command
 ```bash
 python eval_player.py -c "Premier League" -s "2015/2016" -p /path/to/player_data -m /path/to/save_model.ckpt -o /path/to/output.csv
-
+```bash
 This command will evaluate the xT contributions of each player using the trained GNN model and save the results to the specified output_path.
 
 Files
